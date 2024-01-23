@@ -11855,5 +11855,14 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+* {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+#display {
+  width: max-content;
+  border: 2px dashed black;
+}
 
 /*# sourceMappingURL=index.css.map */
