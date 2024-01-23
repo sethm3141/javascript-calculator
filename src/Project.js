@@ -147,10 +147,21 @@ export default class Project extends Component {
     strHold = '';
     for (let i = 1; i < str.length - 1; i++) {
       if (NUMS.find((num) => num === str[i])) {
-        
+        strHold += str[i];
+        continue;
+      } else if (str[i] === '-' || str[i] === '.') {
+        strHold += str[i];
+        continue;
+      } else if (str[i] === ')') {
+        numbers_str.push(strHold);
+        strHold = '';
+        continue;
+      } else {
+        continue;
       }
-      
     }
+    numbers_str.push(strHold);
+    console.log(numbers_str);
 
     //* grab every operation outside the ()'s into the array of calcs
 
