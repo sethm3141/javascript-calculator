@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import StringToNum from './StringToNum';
 
 const numbers = [
   {
@@ -144,6 +145,7 @@ export default class Project extends Component {
     str = strHold;
 
     //* grab every number inside the ()'s into the array of numbers
+    //* grab every operation outside the ()'s into the array of calcs
     strHold = '';
     for (let i = 1; i < str.length - 1; i++) {
       if (NUMS.find((num) => num === str[i])) {
@@ -156,6 +158,9 @@ export default class Project extends Component {
         numbers_str.push(strHold);
         strHold = '';
         continue;
+      } else if (str[i] !== '(' && str[i] !== ')') {
+        calcs.push(str[i]);
+        continue;
       } else {
         continue;
       }
@@ -163,9 +168,10 @@ export default class Project extends Component {
     numbers_str.push(strHold);
     console.log(numbers_str);
 
-    //* grab every operation outside the ()'s into the array of calcs
-
     //* pass the numbers_str through conversion function that returns them as decimal into array of numbers_dec
+    for (let i = 0; i < numbers_str.length; i++) {
+      numbers_dec.push(StringToNum(numbers_str[i]));
+    }
 
     //* run math operations on actual decimals in proper order ('x', '/', '+')
 
