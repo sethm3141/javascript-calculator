@@ -181,13 +181,11 @@ export default class Project extends Component {
       }
     }
     numbers_str.push(strHold);
-    console.log(numbers_str);
 
     //* parseFloat as decimal into array of numbers_dec
     for (let i = 0; i < numbers_str.length; i++) {
       numbers_dec.push(parseFloat(numbers_str[i]));
     }
-    console.log('nums: ' + numbers_dec);
 
     //* run math operations on actual decimals in proper order ('x', '/', '+')
     let opIndex = 0;
@@ -197,7 +195,6 @@ export default class Project extends Component {
     //! I add 1 to the check, but not to the actual index variable.
     opIndex = calcs.indexOf('x');
     while ((opIndex = calcs.indexOf('x')) + 1) {
-      console.log('x run');
       newVal = numbers_dec[opIndex] * numbers_dec[opIndex + 1];
       for (let i = 0; i < numbers_dec.length; i++) {
         if (i === opIndex) {
@@ -220,12 +217,10 @@ export default class Project extends Component {
       newArr = [];
       newVal = 0;
     }
-    console.log('nums: ' + numbers_dec);
     //! to keep the loop from breaking when a index of 0 is correctly found,
     //! I add 1 to the check, but not to the actual index variable.
     opIndex = calcs.indexOf('/');
     while ((opIndex = calcs.indexOf('/')) + 1) {
-      console.log('/ run');
       newVal = numbers_dec[opIndex] / numbers_dec[opIndex + 1];
       for (let i = 0; i < numbers_dec.length; i++) {
         if (i === opIndex) {
@@ -248,12 +243,10 @@ export default class Project extends Component {
       newArr = [];
       newVal = 0;
     }
-    console.log('nums: ' + numbers_dec);
     //! to keep the loop from breaking when a index of 0 is correctly found,
     //! I add 1 to the check, but not to the actual index variable.
     opIndex = calcs.indexOf('+');
     while ((opIndex = calcs.indexOf('+')) + 1) {
-      console.log('+ run');
       newVal = numbers_dec[opIndex] + numbers_dec[opIndex + 1];
       for (let i = 0; i < numbers_dec.length; i++) {
         if (i === opIndex) {
@@ -276,7 +269,6 @@ export default class Project extends Component {
       newArr = [];
       newVal = 0;
     }
-    console.log('nums: ' + numbers_dec);
     calc = numbers_dec[0];
 
     //* set the output and input to be the final value
@@ -311,14 +303,16 @@ export default class Project extends Component {
     let val = this.state.input;
 
     //* if input equals Infinity - 00
+    console.log(this.state.input);
     if (this.state.input === 'Infinity') {
-      console.log('tripped 00');
+      // console.log('tripped 00');
       this.clear();
+      return;
     }
 
     //* after hitting equals, output=something, then reset if num is hit - 01
     if (this.state.output != null) {
-      console.log('tripped 01');
+      // console.log('tripped 01');
       //* if a number is the input first
       if (NUMS.find((num) => num === inputChar)) {
         this.setState({ preText: '', input: inputChar, output: null });
@@ -359,7 +353,7 @@ export default class Project extends Component {
 
     //* decimal action is handled - 02
     if (inputChar === '.') {
-      console.log('tripped 02');
+      // console.log('tripped 02');
       if (this.state.isDecimal) {
         return;
       }
@@ -381,7 +375,7 @@ export default class Project extends Component {
 
     //* first input is a minus - 03
     if (val === '0' && inputChar === '-') {
-      console.log('tripped 03');
+      // console.log('tripped 03');
       this.setState({ input: '-0' });
       return;
     }
@@ -391,7 +385,7 @@ export default class Project extends Component {
       (val === '0' || val === '-0') &&
       !actions.find((action) => action.value === inputChar)
     ) {
-      console.log('tripped 04');
+      // console.log('tripped 04');
       if (val === '-0') {
         this.setState({ input: '-' + inputChar, isSymbol: false });
         return;
@@ -402,7 +396,7 @@ export default class Project extends Component {
 
     //* no leading zeros on a number - 05
     if (inputChar === '0') {
-      console.log('tripped 05');
+      // console.log('tripped 05');
       if (this.state.isSymbol && !(val[val.length - 1] === '0')) {
         this.setState({ input: val + inputChar });
         return;
@@ -416,7 +410,7 @@ export default class Project extends Component {
       actions.find((action) => action.value === inputChar) &&
       !(inputChar === '.')
     ) {
-      console.log('tripped 06');
+      // console.log('tripped 06');
       if (this.state.isSymbol && this.state.isMinus) {
         return;
       }
@@ -449,7 +443,7 @@ export default class Project extends Component {
     }
 
     //* basic setState if passes tests
-    console.log('tripped normal');
+    // console.log('tripped normal');
     this.setState({
       input: val + inputChar,
       isSymbol: false,
