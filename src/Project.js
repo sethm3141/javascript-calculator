@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import StringToNum from './StringToNum';
 
 const numbers = [
   {
@@ -74,8 +73,9 @@ export default class Project extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      preText: '',
       input: '0',
-      output: '0',
+      output: null,
       isSymbol: true,
       isMinus: false,
       isFirstEntry: true,
@@ -86,16 +86,19 @@ export default class Project extends Component {
     this.handleEquals = this.handleEquals.bind(this);
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   clear = () => {
-    this.setState({ input: '0', output: '0' });
+    this.setState({
+      preText: '',
+      input: '0',
+      output: null,
+      isSymbol: true,
+      isMinus: false,
+      isFirstEntry: true,
+      isDecimal: false,
+    });
   };
 
   handleEquals = () => {
-    console.log('equals: something');
     let str = this.state.input; // input string to be processed
     let strHold = '';
     let calc = 0; // output final calculated value
@@ -104,7 +107,9 @@ export default class Project extends Component {
     let calcs = []; // array of operations that need to be ran
 
     //* remove -- with +
-    str = str.replace('--', '+');
+    while (str.indexOf('--') + 1) {
+      str = str.replace('--', '+');
+    }
 
     //* remove any hanging actions at the end
     let indexEnd = 0;
@@ -118,6 +123,16 @@ export default class Project extends Component {
     if (indexEnd !== 0) {
       str = str.slice(0, indexEnd);
     }
+
+    //* remove any hanging '.' decimal points
+    let tempStr = [];
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === '.' && !NUMS.find((num) => num === str[i + 1])) {
+        continue;
+      }
+      tempStr.push(str[i]);
+    }
+    str = tempStr;
 
     //* group numbers with and without - sign inside of () and place + if there's only single -
     strHold = '';
@@ -136,7 +151,7 @@ export default class Project extends Component {
         continue;
       }
       if (str[i] === '-' && NUMS.find((num) => num === str[i - 1])) {
-        strHold = strHold + '+(';
+        strHold = strHold + ')+(';
       }
 
       strHold = strHold + str[i];
@@ -168,33 +183,179 @@ export default class Project extends Component {
     numbers_str.push(strHold);
     console.log(numbers_str);
 
-    //* pass the numbers_str through conversion function that returns them as decimal into array of numbers_dec
+    //* parseFloat as decimal into array of numbers_dec
     for (let i = 0; i < numbers_str.length; i++) {
-      numbers_dec.push(StringToNum(numbers_str[i]));
+      numbers_dec.push(parseFloat(numbers_str[i]));
     }
+    console.log('nums: ' + numbers_dec);
 
     //* run math operations on actual decimals in proper order ('x', '/', '+')
+    let opIndex = 0;
+    let newArr = [];
+    let newVal = 0;
+    //! to keep the loop from breaking when a index of 0 is correctly found,
+    //! I add 1 to the check, but not to the actual index variable.
+    opIndex = calcs.indexOf('x');
+    while ((opIndex = calcs.indexOf('x')) + 1) {
+      console.log('x run');
+      newVal = numbers_dec[opIndex] * numbers_dec[opIndex + 1];
+      for (let i = 0; i < numbers_dec.length; i++) {
+        if (i === opIndex) {
+          newArr.push(newVal);
+          continue;
+        } else if (i === opIndex + 1) {
+          continue;
+        }
+        newArr.push(numbers_dec[i]);
+      }
+      numbers_dec = newArr;
+      newArr = [];
+      for (let i = 0; i < calcs.length; i++) {
+        if (i === opIndex) {
+          continue;
+        }
+        newArr.push(calcs[i]);
+      }
+      calcs = newArr;
+      newArr = [];
+      newVal = 0;
+    }
+    console.log('nums: ' + numbers_dec);
+    //! to keep the loop from breaking when a index of 0 is correctly found,
+    //! I add 1 to the check, but not to the actual index variable.
+    opIndex = calcs.indexOf('/');
+    while ((opIndex = calcs.indexOf('/')) + 1) {
+      console.log('/ run');
+      newVal = numbers_dec[opIndex] / numbers_dec[opIndex + 1];
+      for (let i = 0; i < numbers_dec.length; i++) {
+        if (i === opIndex) {
+          newArr.push(newVal);
+          continue;
+        } else if (i === opIndex + 1) {
+          continue;
+        }
+        newArr.push(numbers_dec[i]);
+      }
+      numbers_dec = newArr;
+      newArr = [];
+      for (let i = 0; i < calcs.length; i++) {
+        if (i === opIndex) {
+          continue;
+        }
+        newArr.push(calcs[i]);
+      }
+      calcs = newArr;
+      newArr = [];
+      newVal = 0;
+    }
+    console.log('nums: ' + numbers_dec);
+    //! to keep the loop from breaking when a index of 0 is correctly found,
+    //! I add 1 to the check, but not to the actual index variable.
+    opIndex = calcs.indexOf('+');
+    while ((opIndex = calcs.indexOf('+')) + 1) {
+      console.log('+ run');
+      newVal = numbers_dec[opIndex] + numbers_dec[opIndex + 1];
+      for (let i = 0; i < numbers_dec.length; i++) {
+        if (i === opIndex) {
+          newArr.push(newVal);
+          continue;
+        } else if (i === opIndex + 1) {
+          continue;
+        }
+        newArr.push(numbers_dec[i]);
+      }
+      numbers_dec = newArr;
+      newArr = [];
+      for (let i = 0; i < calcs.length; i++) {
+        if (i === opIndex) {
+          continue;
+        }
+        newArr.push(calcs[i]);
+      }
+      calcs = newArr;
+      newArr = [];
+      newVal = 0;
+    }
+    console.log('nums: ' + numbers_dec);
+    calc = numbers_dec[0];
 
     //* set the output and input to be the final value
-    this.setState({ input: this.state.input + ' => ' + str, output: str });
+    //! if calc is '0', then we want to setup initial state
+    if (calc.toString() === '0') {
+      this.setState({
+        preText: this.state.input + ' = ',
+        input: calc.toString(),
+        output: null,
+        isSymbol: true,
+        isMinus: false,
+        isFirstEntry: true,
+        isDecimal: false,
+      });
+      return;
+    }
+    //! if calc is anything but '0', then we can assume that it's ok
+    //! to click on a symbol right away.
+    this.setState({
+      preText: this.state.input + ' = ',
+      input: calc.toString(),
+      output: calc.toString(),
+      isSymbol: false,
+      isMinus: false,
+      isFirstEntry: false,
+      isDecimal: false,
+    });
   };
 
   addToInput = (inputChar) => {
     //* grab the old state that might change...
     let val = this.state.input;
-    // console.log('---------------------');
-    // console.log('val: ' + val);
-    // console.log('val[last]: ' + val[val.length - 1]);
-    // console.log('input: ' + inputChar);
-    // console.log('new input: ' + val + inputChar);
-    // console.log('symbol: ' + this.state.isSymbol);
-    // console.log('minus: ' + this.state.isMinus);
-    // console.log('first: ' + this.state.isFirstEntry);
-    // console.log('decimal: ' + this.state.isDecimal);
-    // console.log('---------------------');
+
+    //* if input equals Infinity - 00
+    if (this.state.input === 'Infinity') {
+      console.log('tripped 00');
+      this.clear();
+    }
 
     //* after hitting equals, output=something, then reset if num is hit - 01
-    //TODO: do this...
+    if (this.state.output != null) {
+      console.log('tripped 01');
+      //* if a number is the input first
+      if (NUMS.find((num) => num === inputChar)) {
+        this.setState({ preText: '', input: inputChar, output: null });
+        return;
+      }
+
+      //* if a decimal action or '0' is the input first
+      if (inputChar === '.' || inputChar === '0') {
+        if (inputChar === '.') {
+          this.setState({
+            preText: '',
+            input: '0.',
+            output: null,
+
+            isSymbol: true,
+            isMinus: false,
+            isFirstEntry: true,
+            isDecimal: true,
+          });
+          return;
+        }
+        this.setState({
+          preText: '',
+          input: '0',
+          output: null,
+
+          isSymbol: true,
+          isMinus: false,
+          isFirstEntry: true,
+          isDecimal: false,
+        });
+        return;
+      }
+      if (actions.find((action) => action.value === inputChar)) {
+        this.setState({ output: null });
+      }
+    }
 
     //* decimal action is handled - 02
     if (inputChar === '.') {
@@ -242,7 +403,10 @@ export default class Project extends Component {
     //* no leading zeros on a number - 05
     if (inputChar === '0') {
       console.log('tripped 05');
-      if (this.state.isSymbol) {
+      if (this.state.isSymbol && !(val[val.length - 1] === '0')) {
+        this.setState({ input: val + inputChar });
+        return;
+      } else if (this.state.isSymbol && val[val.length - 1] === '0') {
         return;
       }
     }
@@ -294,10 +458,12 @@ export default class Project extends Component {
   };
 
   render() {
-    // console.log(this.state);
     return (
       <>
-        <div id='display'>{this.state.input}</div>
+        <div id='display'>
+          {this.state.preText}
+          {this.state.input}
+        </div>
         {numbers.map((number) => {
           return (
             <button
