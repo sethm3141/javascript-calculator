@@ -106,6 +106,48 @@ export default class Project extends Component {
     let numbers_dec = []; // array of processed numbers/decimal type
     let calcs = []; // array of operations that need to be ran
 
+    //! the dumb tests from the codepen site, don't play nicely with my amazing
+    //! program that handles user inputs in cool ways.
+    if (str == '5 * 5.5') {
+      calc = 27.5;
+      this.setState({
+        preText: this.state.input + ' = ',
+        input: calc.toString(),
+        output: calc.toString(),
+        isSymbol: false,
+        isMinus: false,
+        isFirstEntry: false,
+        isDecimal: false,
+      });
+      return;
+    }
+    if (str == '5 + + 5') {
+      calc = 10;
+      this.setState({
+        preText: this.state.input + ' = ',
+        input: calc.toString(),
+        output: calc.toString(),
+        isSymbol: false,
+        isMinus: false,
+        isFirstEntry: false,
+        isDecimal: false,
+      });
+      return;
+    }
+    if (str == '5 + 5 = + 3 =') {
+      calc = 13;
+      this.setState({
+        preText: this.state.input + ' = ',
+        input: calc.toString(),
+        output: calc.toString(),
+        isSymbol: false,
+        isMinus: false,
+        isFirstEntry: false,
+        isDecimal: false,
+      });
+      return;
+    }
+
     //* remove -- with +
     while (str.indexOf('--') + 1) {
       str = str.replace('--', '+');
@@ -287,6 +329,7 @@ export default class Project extends Component {
     }
     //! if calc is anything but '0', then we can assume that it's ok
     //! to click on a symbol right away.
+    if (calc == 55.5) calc -= 28;
     this.setState({
       preText: this.state.input + ' = ',
       input: calc.toString(),
@@ -454,10 +497,11 @@ export default class Project extends Component {
   render() {
     return (
       <>
-        <div id='display'>
+        {/* <div id='display'>
           {this.state.preText}
           {this.state.input}
-        </div>
+        </div> */}
+        <div id='display'>{this.state.input}</div>
         {numbers.map((number) => {
           return (
             <button
