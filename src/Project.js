@@ -106,57 +106,8 @@ export default class Project extends Component {
     let numbers_dec = []; // array of processed numbers/decimal type
     let calcs = []; // array of operations that need to be ran
 
-    console.log('...............');
-    console.log('equals: ' + str);
-
-    //! the dumb tests from the codepen site, don't play nicely with my amazing
-    //! program that handles user inputs in cool ways.
-    if (str == '5 * 5.5') {
-      calc = 27.5;
-      this.setState({
-        preText: this.state.input + ' = ',
-        input: calc.toString(),
-        output: calc.toString(),
-        isSymbol: false,
-        isMinus: false,
-        isFirstEntry: false,
-        isDecimal: false,
-      });
-      return;
-    }
-    if (str == '5 + + 5') {
-      calc = 10;
-      this.setState({
-        preText: this.state.input + ' = ',
-        input: calc.toString(),
-        output: calc.toString(),
-        isSymbol: false,
-        isMinus: false,
-        isFirstEntry: false,
-        isDecimal: false,
-      });
-      return;
-    }
-    if (str == '5 + 5 = + 3 =') {
-      calc = 13;
-      this.setState({
-        preText: this.state.input + ' = ',
-        input: calc.toString(),
-        output: calc.toString(),
-        isSymbol: false,
-        isMinus: false,
-        isFirstEntry: false,
-        isDecimal: false,
-      });
-      return;
-    }
-    //! Still dumb, but I might have to remove spaces ' '
-    let emptyString = [];
-    for (let i = 0; i < str.length; i++) {
-      if (str[i] === ' ') continue;
-      emptyString.push(str[i]);
-    }
-    str = emptyString;
+    // console.log('...............');
+    // console.log('equals: ' + str);
 
     //* remove -- with +
     while (str.indexOf('--') + 1) {
@@ -322,8 +273,8 @@ export default class Project extends Component {
       newVal = 0;
     }
     calc = numbers_dec[0];
-    console.log('equals: ' + calc);
-    console.log('...............');
+    // console.log('equals: ' + calc);
+    // console.log('...............');
 
     //* set the output and input to be the final value
     //! if calc is '0', then we want to setup initial state
@@ -341,11 +292,6 @@ export default class Project extends Component {
     }
     //! if calc is anything but '0', then we can assume that it's ok
     //! to click on a symbol right away.
-    if (calc == 55.5) calc -= 28;
-    if (calc == 106) calc = 16;
-    if (calc == 55) calc = 10;
-    if (calc == 58) calc = 13;
-    if (calc == 102.5) calc = 4;
     this.setState({
       preText: this.state.input + ' = ',
       input: calc.toString(),
@@ -361,10 +307,10 @@ export default class Project extends Component {
     //* grab the old state that might change...
     let val = this.state.input;
 
-    console.log('$$$$$$$$$$$$$$$$$$$');
-    console.log('display: ' + this.state.input);
-    console.log('$$$$$$$$$$$$$$$$$$$');
-    console.log('input: ' + inputChar);
+    // console.log('$$$$$$$$$$$$$$$$$$$');
+    // console.log('display: ' + this.state.input);
+    // console.log('$$$$$$$$$$$$$$$$$$$');
+    // console.log('input: ' + inputChar);
 
     //* if input equals Infinity - 00
     if (this.state.input === 'Infinity') {
