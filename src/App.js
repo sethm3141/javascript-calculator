@@ -1,7 +1,11 @@
-import Project from './Project';
+
 
 function App() {
-  return <Project />;
+  return (
+    <main>
+      main
+    </main>
+  );
 }
 
 export default App;
