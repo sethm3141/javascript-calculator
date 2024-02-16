@@ -1,3 +1,9 @@
 @use './custom';
 
-@use './somestyle';
+// @use './somestyle';
+@use './display';
+@use './global';
+@use './calculator';
+
+// components
+@use './components/button';

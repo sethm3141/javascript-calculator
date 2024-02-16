@@ -11855,15 +11855,130 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-* {
-  margin: 1rem;
-  padding: 1rem;
+#display {
+  width: 400px;
+  height: 100%;
+  font-size: 3rem;
+  overflow: hidden;
+  background-color: rgb(168, 89, 89);
+  color: white;
+  border-radius: 0rem 0rem 0 0;
+}
+#display > :first-child {
+  border: none;
+  padding-right: 1rem;
+  overflow: auto;
 }
 
-#display {
-  width: max-content;
-  border: 2px dashed black;
-  letter-spacing: 0.15rem;
+.add-hidden {
+  content: "";
+  left: -10000;
+  top: -10000;
+  opacity: 0;
+}
+
+#warning-message {
+  box-sizing: border-box;
+  width: 400px;
+  height: 100px;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  transform: translate(-50%, -300px);
+  padding-left: 0.75rem;
+  padding-top: 0.55rem;
+  color: hsl(0, 80%, 85%);
+  background-color: rgb(168, 89, 89);
+  text-decoration: underline;
+  border-radius: 1rem 1rem 0 0;
+  animation: slide-up 500ms ease 1;
+}
+
+@keyframes slide-up {
+  from {
+    top: 50%;
+    color: hsla(0, 80%, 85%, 0);
+  }
+  30% {
+    color: hsla(0, 80%, 85%, 0);
+  }
+  80% {
+    top: 44%;
+  }
+  to {
+    top: 44%;
+    color: hsl(0, 80%, 85%);
+  }
+}
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  background-color: lightcoral;
+  font-size: 16px;
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  box-sizing: content-box;
+}
+
+main {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+
+#calculator {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+  border: 5px solid rgb(168, 89, 89);
+  border-radius: 16px;
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
+  background-color: lightcoral;
+  overflow: hidden;
+  z-index: 200;
+  box-sizing: border-box;
+  justify-content: center;
+}
+#calculator > * {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#calculator > :first-child {
+  justify-content: end;
+  align-items: end;
+  min-height: 0;
+  min-width: 0;
+}
+
+.button {
+  font-size: 2.5rem;
+  border: 1px solid rgb(168, 89, 89);
+}
+.button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: darkred;
+  transition: all 300ms ease-in;
+  border: none;
+}
+.button:active {
+  background-color: darkred;
+  opacity: 0.6;
+  transition: all 50ms ease;
 }
 
 /*# sourceMappingURL=index.css.map */
