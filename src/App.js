@@ -127,15 +127,21 @@ function App() {
           innerText={'='}
           grid={[5, 4, 7, 5]}
           handleClick={handleEquals()}
-          style={{ borderRadius: '0 0 1rem 0' }}
+          style={{
+            borderRadius: '0 0 1rem 0',
+          }}
         />
       </section>
-      <div
-        id='warning-message'
-        className={warningRef.current ? '' : warningRef.addedClass}
-      >
-        WARNING: Value Exceeded Limit, Don't Trust Returned Value.
-      </div>
+      {warningRef.current ? (
+        <div
+          id='warning-message'
+          className={warningRef.current ? '' : warningRef.addedClass}
+        >
+          WARNING: Value Exceeded Limit, Don't Trust Returned Value.
+        </div>
+      ) : (
+        <></>
+      )}
     </main>
   );
 }

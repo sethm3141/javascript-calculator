@@ -1,5 +1,8 @@
 #display {
   width: 400px;
+  @media (max-width: 450px) {
+    width: 250px;
+  }
   height: 100%;
   font-size: 3rem;
   overflow: hidden;
@@ -25,6 +28,9 @@
   box-sizing: border-box;
   width: 400px;
   height: 100px;
+  @media (max-width: 450px) {
+    width: 250px;
+  }
 
   margin: 0 auto;
 
@@ -32,6 +38,9 @@
   left: 50%;
   top: 44%;
   transform: translate(-50%, -300px);
+  @media (max-width: 450px) {
+    transform: translate(-50%, -185px);
+  }
 
   padding-left: 0.75rem;
   padding-top: 0.55rem;
